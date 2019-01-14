@@ -1,0 +1,3 @@
+[submodule "scripts/cmapPy"]
+	path = scripts/cmapPy
+	url = https://github.com/cmap/cmapPy.git
