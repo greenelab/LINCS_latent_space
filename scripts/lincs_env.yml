@@ -1,0 +1,26 @@
+name: my_cmapPy_env
+channels:
+- conda-forge
+- defaults
+- bioconda
+dependencies:
+- conda-forge::python=2.7.11
+- conda-forge::backports.lzma
+- conda-forge::keras=2.1.3
+- conda-forge::tensorflow=1.4.0
+- conda-forge::scikit-learn=0.19.1
+- conda-forge::numpy=1.12.1
+- conda-forge::pandas=0.20.3
+- conda-forge::h5py=2.7.0
+- conda-forge::statsmodels=0.8.0
+- conda-forge::matplotlib=2.1.1
+- conda-forge::seaborn=0.8.1
+- bioconda::cmappy
+- conda-forge::jupyter=1.0.0
+- conda-forge::ipykernel=4.8.1
+- conda-forge::ipywidgets=6.0.0
+- conda-forge::widgetsnbextension=2.0.0
+- conda-forge::nb_conda_kernels=2.1.0
+- pip:
+  - requests==2.13.0
+  - keras-tqdm==2.0.1
