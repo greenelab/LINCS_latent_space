@@ -1,0 +1,4 @@
+Environment setting:
+
+1.  Use my_cmapPy_env (python 2) for 1_preProcess_GCTx_all.ipynb
+2.  Use Pa (python 3) for all remaining scripts
