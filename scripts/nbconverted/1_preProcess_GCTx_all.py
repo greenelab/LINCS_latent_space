@@ -84,6 +84,6 @@ print(train_df.shape)
 
 
 # Output
-train_df.to_csv(train_file, sep='\t', compression='xz')
-validation_df.to_csv(validation_file, sep='\t', compression='xz')
+#train_df.to_csv(train_file, sep='\t', compression='xz')
+#validation_df.to_csv(validation_file, sep='\t', compression='xz')
 
