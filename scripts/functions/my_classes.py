@@ -12,13 +12,17 @@ class DataGenerator(keras.utils.Sequence):
         self.data_file = data_file
         self.num_samples = num_samples
         self.data = pd.read_table(
-            self.data_file, chunksize=self.chunk_size, index_col=0)
+            self.data_file,
+            chunksize=self.chunk_size,
+            index_col=0)
 
     # Reinitialize (open) data file to cycle through for the next epoch
     def _reinitialize_data(self):
         #print("I reinitalized the data for you")
         self.data = pd.read_table(
-            self.data_file, chunksize=self.chunk_size, index_col=0)
+            self.data_file,
+            chunksize=self.chunk_size,
+            index_col=0)
 
     # Each call requests a batch index between 0 and the total number of batches
     def __len__(self):

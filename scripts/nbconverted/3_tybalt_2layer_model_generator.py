@@ -96,7 +96,7 @@ from keras.callbacks import Callback
 # beta: Threshold value for ReLU?
 # --------------------------------------------------------------------------------------------------------------------
 
-learning_rate = 0.001
+learning_rate = 0.1#0.001
 epochs = 100
 kappa = 0.01
 
@@ -113,7 +113,7 @@ num_samples_val = 1319
 train_file =  "/home/alexandra/Documents/Data/LINCS/train_model_input.txt.xz"
 validation_file = "/home/alexandra/Documents/Data/LINCS/validation_model_input.txt.xz"
 
-stat_file =  os.path.join(os.path.dirname(os.getcwd()), "stats", "tybalt_2layer_{}latent_stats.csv".format(latent_dim))
+stat_file =  os.path.join(os.path.dirname(os.getcwd()), "stats", "tybalt_2layer_{}latent_stats.tsv".format(latent_dim))
 hist_plot_file = os.path.join(os.path.dirname(os.getcwd()), "stats", "tybalt_2layer_{}latent_hist.png".format(latent_dim))
 
 encoded_file = os.path.join(os.path.dirname(os.getcwd()), "encoded", "train_input_2layer_{}latent_encoded.txt".format(latent_dim))
