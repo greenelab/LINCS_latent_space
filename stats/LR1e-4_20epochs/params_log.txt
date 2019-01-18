@@ -1,0 +1,12 @@
+learning_rate = 0.0001
+epochs = 20
+kappa = 0.01
+
+intermediate_dim = 100
+latent_dim = 10
+epsilon_std = 1.0
+beta = K.variable(0)
+
+chunk_size = 100
+num_samples_train = 1319122
+num_samples_val = 1319
