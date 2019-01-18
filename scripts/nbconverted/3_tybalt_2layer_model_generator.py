@@ -96,7 +96,7 @@ from keras.callbacks import Callback
 # beta: Threshold value for ReLU?
 # --------------------------------------------------------------------------------------------------------------------
 
-learning_rate = 0.1#0.001
+learning_rate = 0.0001#0.001
 epochs = 100
 kappa = 0.01
 
@@ -218,34 +218,34 @@ vae = Model(rnaseq_input, vae_layer)
 vae.compile(optimizer=adam, loss=None, loss_weights=[beta])
 
 
-# In[ ]:
+# In[6]:
 
 
 get_ipython().run_cell_magic('time', '', '# Training\n# hist: record of the training loss at each epoch\nhist = vae.fit_generator(generator=training_generator,\n                         validation_data=validation_generator,\n                         shuffle=True,\n                         epochs=epochs,\n                         callbacks=[WarmUpCallback(beta, kappa)])')
 
 
-# In[ ]:
+# In[7]:
 
 
 # Trained model
 encoder = Model(rnaseq_input, z_mean_encoded)
 
 
-# In[ ]:
+# In[8]:
 
 
 # Visualize training performance
 history_df = pd.DataFrame(hist.history)
-loss_df = pd.DataFrame(hist.history['loss'])
-ax = loss_df.plot()
-#ax = history_df.plot()
+#loss_df = pd.DataFrame(hist.history['loss'])
+#ax = loss_df.plot()
+ax = history_df.plot()
 ax.set_xlabel('Epochs')
 ax.set_ylabel('VAE Loss')
 fig = ax.get_figure()
 fig.savefig(hist_plot_file)
 
 
-# In[ ]:
+# In[9]:
 
 
 loss = hist.history['loss']
@@ -253,13 +253,13 @@ val_loss = hist.history['val_loss']
 epochs = range(epochs)
 plt.figure()
 plt.plot(epochs, loss, 'o', label='Training loss')
-plt.plot(epochs, val_loss, 'b', label='Validation loss')
+#plt.plot(epochs, val_loss, 'b', label='Validation loss')
 plt.title('Training and validation loss')
 plt.legend()
 plt.show()
 
 
-# In[ ]:
+# In[10]:
 
 
 # Output
