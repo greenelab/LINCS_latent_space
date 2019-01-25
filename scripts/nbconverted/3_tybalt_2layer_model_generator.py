@@ -96,12 +96,12 @@ from keras.callbacks import Callback
 # beta: Threshold value for ReLU?
 # --------------------------------------------------------------------------------------------------------------------
 
-learning_rate = 0.0001#0.001
-epochs = 100
+learning_rate = 0.00001
+epochs = 50
 kappa = 0.01
 
-intermediate_dim = 100
-latent_dim = 10
+intermediate_dim = 500
+latent_dim = 100
 epsilon_std = 1.0
 beta = K.variable(0)
 

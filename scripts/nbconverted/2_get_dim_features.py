@@ -22,7 +22,7 @@ randomState = 123
 # In[2]:
 
 
-get_ipython().run_cell_magic('time', '', '# Load dataset\ndata_file =  "/home/alexandra/Documents/Data/LINCS/validation_model_input.txt.xz"\n\nrnaseq = pd.read_table(data_file, index_col=0, header=0, compression = \'xz\')\n\n# output\ndim_file = os.path.join(os.path.dirname(os.getcwd()), "metadata", "validation_dim.pickle")')
+get_ipython().run_cell_magic('time', '', '# Load dataset\ndata_file =  "/home/alexandra/Documents/Data/LINCS/train_model_input.txt.xz"\n\nrnaseq = pd.read_table(data_file, index_col=0, header=0, compression = \'xz\')\n\n# output\ndim_file = os.path.join(os.path.dirname(os.getcwd()), "metadata", "train_dim.pickle")')
 
 
 # In[3]:
