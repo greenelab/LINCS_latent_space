@@ -1,4 +1,5 @@
 """
+Adopted from
 tybalt/models.py
 2017 Gregory Way
 Functions enabling the construction and usage of Tybalt and ADAGE models
@@ -115,7 +116,7 @@ class Tybalt():
         cbks = [WarmUpCallback(self.beta, self.kappa)]
         if separate_loss:
             print("updating callback loss...")
-            tybalt_loss_cbk = LossCallback(training_data=train_df,
+            tybalt_loss_cbk = LossCallback(training_data=np.array(iter(train_df)),
                                            encoder_cbk=self.encoder,
                                            decoder_cbk=self.decoder,
                                            original_dim=self.original_dim)

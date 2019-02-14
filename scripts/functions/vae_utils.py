@@ -108,6 +108,7 @@ class LossCallback(Callback):
         self.original_dim = original_dim
         self.encoder_cbk = encoder_cbk
         self.decoder_cbk = decoder_cbk
+        print(training_data)
 
     def on_train_begin(self, logs={}):
         print("begin training")
