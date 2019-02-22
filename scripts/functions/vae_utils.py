@@ -108,26 +108,23 @@ class LossCallback(Callback):
         self.original_dim = original_dim
         self.encoder_cbk = encoder_cbk
         self.decoder_cbk = decoder_cbk
-        print(training_data)
 
     def on_train_begin(self, logs={}):
         print("begin training")
-        self.xent_loss_batch = []
         self.xent_loss = []
         self.kl_loss = []
 
-    def on_batch_end(self):
-        print("ending epoch")
-        recon = self.decoder_cbk.predict(
-            self.encoder_cbk.predict(self.training_data))
-        xent_loss_batch = approx_keras_binary_cross_entropy(x=recon,
-                                                            z=self.training_data,
-                                                            p=self.original_dim)
-        self.xent_loss_batch.append(xent_loss_batch)
-        return
-
     def on_epoch_end(self, epoch, logs={}):
-        xent_loss = np.mean(xent_loss_batch)
+        print("ending epoch")
+        print(self.decoder_cbk)
+        print(self.encoder_cbk)
+        # print(self.training_data.shape)
+        # print(self.encoder_cbk.predict_generator(self.training_data))
+        recon = self.decoder_cbk.predict_on_batch(
+            self.encoder_cbk.predict_on_batch(self.training_data))
+        xent_loss = approx_keras_binary_cross_entropy(x=recon,
+                                                      z=self.training_data,
+                                                      p=self.original_dim)
         full_loss = logs.get('loss')
         self.xent_loss.append(xent_loss)
         self.kl_loss.append(full_loss - xent_loss)

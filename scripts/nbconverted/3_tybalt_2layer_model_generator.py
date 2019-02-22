@@ -97,22 +97,47 @@ from keras.callbacks import Callback
 # --------------------------------------------------------------------------------------------------------------------
 
 learning_rate = 0.00001
-epochs = 50
+epochs = 100
 kappa = 0.01
 
-intermediate_dim = 500
+intermediate_dim = 200
 latent_dim = 100
 epsilon_std = 1.0
 beta = K.variable(0)
 
-chunk_size = 100
-num_samples_train = 1319122
-num_samples_val = 1319
+chunk_size = 1000
+
+subsample_dataset = "subsample_13K_validation_0.2"
+
+# Get dimensions of datasets
+train_dim_file =  os.path.join(os.path.dirname(os.getcwd()), "metadata", subsample_dataset, "train_tune_dim.pickle")
+val_dim_file =  os.path.join(os.path.dirname(os.getcwd()), "metadata", subsample_dataset, "validation_tune_dim.pickle")
+
+with open(train_dim_file, 'rb') as f:
+    num_train_samples, num_genes = pickle.load(f)
+with open(val_dim_file, 'rb') as f:
+    num_val_samples, num_genes = pickle.load(f)
+
+original_dim_model = num_genes
+print(num_train_samples)#num_samples_train = 1319122
+print(num_val_samples)#num_samples_val = 1319
 
 
-train_file =  "/home/alexandra/Documents/Data/LINCS/train_model_input.txt.xz"
-validation_file = "/home/alexandra/Documents/Data/LINCS/validation_model_input.txt.xz"
+# In[4]:
 
+
+# Load gene expression data using generator 
+train_file =  "/home/alexandra/Documents/Data/LINCS_tuning/"+subsample_dataset+"/train_model_input.txt.xz"
+validation_file = "/home/alexandra/Documents/Data/LINCS_tuning/"+subsample_dataset+"/validation_model_input.txt.xz"
+
+training_generator = DataGenerator(train_file, chunk_size, num_train_samples)
+validation_generator = DataGenerator(validation_file, chunk_size, num_val_samples)
+
+
+# In[5]:
+
+
+# Output files
 stat_file =  os.path.join(os.path.dirname(os.getcwd()), "stats", "tybalt_2layer_{}latent_stats.tsv".format(latent_dim))
 hist_plot_file = os.path.join(os.path.dirname(os.getcwd()), "stats", "tybalt_2layer_{}latent_hist.png".format(latent_dim))
 
@@ -124,19 +149,11 @@ model_decoder_file = os.path.join(os.path.dirname(os.getcwd()), "models", "tybal
 weights_decoder_file = os.path.join(os.path.dirname(os.getcwd()), "models", "tybalt_2layer_{}latent_decoder_weights.h5".format(latent_dim))
 
 
-# In[4]:
-
-
-# Generators
-training_generator = DataGenerator(train_file, chunk_size, num_samples_train)
-validation_generator = DataGenerator(validation_file, chunk_size, num_samples_val)
-
-
-# In[5]:
+# In[6]:
 
 
 # Architecture of VAE
-dim_file =  os.path.join(os.path.dirname(os.getcwd()), "metadata", "validation_dim.pickle")
+dim_file =  os.path.join(os.path.dirname(os.getcwd()), "metadata", subsample_dataset, "validation_tune_dim.pickle")
 
 with open(dim_file, 'rb') as f:
     num_samples, num_genes = pickle.load(f)
@@ -218,20 +235,20 @@ vae = Model(rnaseq_input, vae_layer)
 vae.compile(optimizer=adam, loss=None, loss_weights=[beta])
 
 
-# In[6]:
+# In[7]:
 
 
 get_ipython().run_cell_magic('time', '', '# Training\n# hist: record of the training loss at each epoch\nhist = vae.fit_generator(generator=training_generator,\n                         validation_data=validation_generator,\n                         shuffle=True,\n                         epochs=epochs,\n                         callbacks=[WarmUpCallback(beta, kappa)])')
 
 
-# In[7]:
+# In[8]:
 
 
 # Trained model
 encoder = Model(rnaseq_input, z_mean_encoded)
 
 
-# In[8]:
+# In[9]:
 
 
 # Visualize training performance
@@ -245,7 +262,7 @@ fig = ax.get_figure()
 fig.savefig(hist_plot_file)
 
 
-# In[9]:
+# In[10]:
 
 
 loss = hist.history['loss']
@@ -259,7 +276,7 @@ plt.legend()
 plt.show()
 
 
-# In[10]:
+# In[11]:
 
 
 # Output

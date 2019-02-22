@@ -17,7 +17,7 @@ from keras.models import Model, Sequential
 from keras.regularizers import l1
 from keras.utils import plot_model
 
-from functions.vae_utils_original import CustomVariationalLayer, WarmUpCallback, LossCallback, sampling_maker
+from functions.vae_utils import CustomVariationalLayer, WarmUpCallback, LossCallback, sampling_maker
 from functions.base import VAE, BaseModel
 
 
@@ -101,7 +101,7 @@ class Tybalt():
     def visualize_architecture(self, output_file):
         # Visualize the connections of the custom VAE model
         plot_model(self.vae, to_file=output_file)
-        #SVG(model_to_dot(self.vae).create(prog='dot', format='svg'))
+        # SVG(model_to_dot(self.vae).create(prog='dot', format='svg'))
 
     def train_vae(self, train_df, test_df, separate_loss=False):
         """
@@ -116,11 +116,24 @@ class Tybalt():
         cbks = [WarmUpCallback(self.beta, self.kappa)]
         if separate_loss:
             print("updating callback loss...")
-            tybalt_loss_cbk = LossCallback(training_data=np.array(iter(train_df)),
+            # print(type(train_df))
+            # print(train_df)
+            # print(np.array(next(iter(train_df))))
+            # print(np.array(iter(train_df)))
+            # print(np.array(train_df.__getitem__))
+            # print(train_df.__getitem__)
+            tybalt_loss_cbk = LossCallback(training_data=np.array(next(iter(train_df)))[0],
                                            encoder_cbk=self.encoder,
                                            decoder_cbk=self.decoder,
                                            original_dim=self.original_dim)
             cbks += [tybalt_loss_cbk]
+            print(tybalt_loss_cbk)
+            training_data = np.array(next(iter(train_df)))
+            print(training_data)
+            print(training_data.shape)
+            print(self.encoder)
+            print(self.decoder)
+            print(self.original_dim)
             print("added callback")
         print("Going to start training...")
 
