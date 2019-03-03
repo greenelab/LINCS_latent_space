@@ -1,20 +1,20 @@
 
 # coding: utf-8
 
-# In[1]:
+# # Train 2-layer Tybalt 
+# By Alexandra Lee
+# 
+# created December 2018
+# 
+# Encode Pseudomonas gene expression data into low dimensional latent space using Tybalt with 2-hidden layers.  This time plot loss function separately (i.e. separate reconstruction loss and KL divergence).
+# 
+# Note: Need to use python 3 to support '*' syntax change
+
+# In[ ]:
 
 
 get_ipython().run_line_magic('load_ext', 'autoreload')
 get_ipython().run_line_magic('autoreload', '2')
-# -----------------------------------------------------------------------------------------------------------------------
-# By Alexandra Lee
-# (created Janurary 2019) 
-#
-# Encode Pseudomonas gene expression data into low dimensional latent space using 
-# Tybalt with 2-hidden layers
-# 
-# Note: Need to use python 3 to support '*' syntax change
-# --------------------------------------------------------------------------------------------------------------------
 import os
 import argparse
 import pandas as pd
@@ -79,23 +79,22 @@ from keras import metrics, optimizers
 from keras.callbacks import Callback
 
 
+# ## Initialize hyper parameters
+# 
+# 1.  learning rate: 
+# 2.  batch size: Total number of training examples present in a single batch.  Iterations is the number of batches needed to complete one epoch
+# 3.  epochs: One Epoch is when an ENTIRE dataset is passed forward and backward through the neural network only ONCE
+# 4.  kappa: warmup
+# 5.  original dim: dimensions of the raw data
+# 6.  latent dim: dimensiosn of the latent space (fixed by the user)
+#     Note: intrinsic latent space dimension unknown
+# 7.  epsilon std: 
+# 8.  beta: Threshold value for ReLU?
+
 # In[3]:
 
 
-# --------------------------------------------------------------------------------------------------------------------
-# Initialize hyper parameters
-#
-# learning rate: 
-# batch size: Total number of training examples present in a single batch
-#             Iterations is the number of batches needed to complete one epoch
-# epochs: One Epoch is when an ENTIRE dataset is passed forward and backward through the neural network only ONCE
-# kappa: warmup
-# original dim: dimensions of the raw data
-# latent dim: dimensiosn of the latent space (fixed by the user)
-#   Note: intrinsic latent space dimension unknown
-# epsilon std: 
-# beta: Threshold value for ReLU?
-# --------------------------------------------------------------------------------------------------------------------
+# Initialize parameters
 learning_rate_model = 0.00001
 epochs_model = 100
 kappa_model = 0.01
@@ -214,6 +213,21 @@ plt.show()
 kl_loss = model.history_df['kl']
 epochs = range(epochs_model)
 plt.figure()
+plt.plot(epochs, kl_loss, 'g', label='KL loss')
+plt.title('KL Divergence')
+plt.legend()
+plt.show()
+
+
+# In[16]:
+
+
+# Plot KL divergence
+recon_loss = model.history_df['recon']
+kl_loss = - model.history_df['kl']
+epochs = range(epochs_model)
+plt.figure()
+plt.plot(epochs, recon_loss, 'b', label='recon loss')
 plt.plot(epochs, kl_loss, 'g', label='KL loss')
 plt.title('KL Divergence')
 plt.legend()

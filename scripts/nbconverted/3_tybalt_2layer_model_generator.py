@@ -1,20 +1,21 @@
 
 # coding: utf-8
 
-# In[1]:
+# # Train 2-layer Tybalt
+# 
+# **By Alexandra Lee**
+# 
+# **created December 2018**
+# 
+# Encode Pseudomonas gene expression data into low dimensional latent space using Tybalt with 2-hidden layers
+#  
+# Note: Need to use python 3 to support '*' syntax change
+
+# In[ ]:
 
 
 get_ipython().run_line_magic('load_ext', 'autoreload')
 get_ipython().run_line_magic('autoreload', '2')
-# -----------------------------------------------------------------------------------------------------------------------
-# By Alexandra Lee
-# (created December 2018) 
-#
-# Encode Pseudomonas gene expression data into low dimensional latent space using 
-# Tybalt with 2-hidden layers
-# 
-# Note: Need to use python 3 to support '*' syntax change
-# --------------------------------------------------------------------------------------------------------------------
 import os
 import argparse
 import pandas as pd
@@ -78,24 +79,22 @@ from keras import metrics, optimizers
 from keras.callbacks import Callback
 
 
+# ## Initialize hyper parameters
+# 
+# 1.  learning rate: 
+# 2.  batch size: Total number of training examples present in a single batch.  Iterations is the number of batches needed to complete one epoch
+# 3.  epochs: One Epoch is when an ENTIRE dataset is passed forward and backward through the neural network only ONCE
+# 4.  kappa: warmup
+# 5.  original dim: dimensions of the raw data
+# 6.  latent dim: dimensiosn of the latent space (fixed by the user)
+#     Note: intrinsic latent space dimension unknown
+# 7.  epsilon std: 
+# 8.  beta: Threshold value for ReLU?
+
 # In[3]:
 
 
-# --------------------------------------------------------------------------------------------------------------------
-# Initialize hyper parameters
-#
-# learning rate: 
-# batch size: Total number of training examples present in a single batch
-#             Iterations is the number of batches needed to complete one epoch
-# epochs: One Epoch is when an ENTIRE dataset is passed forward and backward through the neural network only ONCE
-# kappa: warmup
-# original dim: dimensions of the raw data
-# latent dim: dimensiosn of the latent space (fixed by the user)
-#   Note: intrinsic latent space dimension unknown
-# epsilon std: 
-# beta: Threshold value for ReLU?
-# --------------------------------------------------------------------------------------------------------------------
-
+# Initialize parameters
 learning_rate = 0.00001
 epochs = 100
 kappa = 0.01
@@ -260,20 +259,6 @@ ax.set_xlabel('Epochs')
 ax.set_ylabel('VAE Loss')
 fig = ax.get_figure()
 fig.savefig(hist_plot_file)
-
-
-# In[10]:
-
-
-loss = hist.history['loss']
-val_loss = hist.history['val_loss']
-epochs = range(epochs)
-plt.figure()
-plt.plot(epochs, loss, 'o', label='Training loss')
-#plt.plot(epochs, val_loss, 'b', label='Validation loss')
-plt.title('Training and validation loss')
-plt.legend()
-plt.show()
 
 
 # In[11]:
