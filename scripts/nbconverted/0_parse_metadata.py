@@ -131,28 +131,36 @@ print(top_drug)
 conditions_count['drug'].value_counts()
 
 
-# In[14]:
+# In[26]:
 
 
 # What is the counts for the different primary tissue site
-top_tissue = conditions_count['primary site'].value_counts().index[1]
+top_tissue = conditions_count['primary site'].value_counts().index[0]
 print(top_tissue)
 conditions_count['primary site'].value_counts()
 
 
-# In[15]:
+# In[27]:
 
 
 # Filter by the top primary site (tissue types)
 conditions_count[conditions_count['primary site'] == top_tissue]['subtype'].value_counts()
 
 
-# In[16]:
+# In[28]:
 
 
 conditions_count[(conditions_count['primary site'] == top_tissue) &
                  (conditions_count['subtype'] == top_subtype) &
                  (conditions_count['time point'] == '24')]
+
+
+# In[41]:
+
+
+conditions_count[(conditions_count['primary site'] == top_tissue) &
+                 (conditions_count['subtype'] == top_subtype) &
+                 (conditions_count['time point'] == '24')]['drug type'].value_counts()
 
 
 # In[17]:
@@ -163,7 +171,25 @@ multiple_dose_conc[(multiple_dose_conc['primary site'] == top_tissue) &
                  (multiple_dose_conc['time point'] == '24')]
 
 
-# In[18]:
+# In[33]:
+
+
+top_drug = multiple_dose_conc[(multiple_dose_conc['primary site'] == top_tissue) &
+                 (multiple_dose_conc['subtype'] == top_subtype) &
+                 (multiple_dose_conc['time point'] == '24')]['drug'].value_counts().index[0]
+print(top_drug)
+
+
+# In[35]:
+
+
+multiple_dose_conc[(multiple_dose_conc['primary site'] == top_tissue) &
+                 (multiple_dose_conc['subtype'] == top_subtype) &
+                 (multiple_dose_conc['time point'] == '24') &
+                  (multiple_dose_conc['drug'] == top_drug)]['count'].sum()
+
+
+# In[38]:
 
 
 multiple_dose_conc[(multiple_dose_conc['primary site'] == top_tissue) &
