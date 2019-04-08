@@ -52,7 +52,7 @@ validation_file = "/home/alexandra/Documents/Data/LINCS_tuning/validation_model_
 # In[3]:
 
 
-get_ipython().run_cell_magic('time', '', 'data_file = "/home/alexandra/Documents/Data/LINCS/GSE92742_Broad_LINCS_Level3_INF_mlr12k_n1319138x12328.gctx"\n\n# Keep only landmark genes\ngene_info_file = os.path.join(os.path.dirname(os.getcwd()), "metadata","GSE92742_Broad_LINCS_gene_info.txt")\ngene_info = pd.read_table(gene_info_file, dtype=str)\nlandmark_gene_row_ids = gene_info["pr_gene_id"][gene_info["pr_is_lm"] == "1"]\n\ndata = parse(data_file, rid = landmark_gene_row_ids)\n\ndata_df = data.data_df.T')
+get_ipython().run_cell_magic('time', '', 'data_file = "/home/alexandra/Documents/Data/LINCS/GSE92742_Broad_LINCS_Level3_INF_mlr12k_n1319138x12328.gctx"\n\n# Keep only landmark genes\ngene_info_file = os.path.join(\n    os.path.dirname(\n        os.getcwd()), "metadata","GSE92742_Broad_LINCS_gene_info.txt")\n\ngene_info = pd.read_table(gene_info_file, dtype=str)\nlandmark_gene_row_ids = gene_info["pr_gene_id"][gene_info["pr_is_lm"] == "1"]\n\ndata = parse(data_file, rid = landmark_gene_row_ids)\n\ndata_df = data.data_df.T')
 
 
 # In[4]:

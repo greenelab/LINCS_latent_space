@@ -34,8 +34,12 @@ rnaseq_val = pd.read_table(val_file, index_col=0, header=0, compression = 'xz')
 
 
 # Output files
-dim_train_file = os.path.join(os.path.dirname(os.getcwd()), "metadata", subsample_dataset, "train_tune_dim.pickle")
-dim_val_file = os.path.join(os.path.dirname(os.getcwd()), "metadata", subsample_dataset, "validation_tune_dim.pickle")
+dim_train_file = os.path.join(
+    os.path.dirname(
+        os.getcwd()), "metadata", subsample_dataset, "train_tune_dim.pickle")
+dim_val_file = os.path.join(
+    os.path.dirname(
+        os.getcwd()), "metadata", subsample_dataset, "validation_tune_dim.pickle")
 
 
 # In[5]:

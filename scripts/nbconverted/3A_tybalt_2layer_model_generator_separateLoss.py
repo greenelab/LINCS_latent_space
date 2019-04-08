@@ -107,8 +107,13 @@ beta_model = K.variable(0)
 chunk_size = 100
 
 # Get dimensions of datasets
-train_dim_file =  os.path.join(os.path.dirname(os.getcwd()), "metadata", "all_1M_validation_0.1", "train_dim.pickle")
-val_dim_file =  os.path.join(os.path.dirname(os.getcwd()), "metadata", "all_1M_validation_0.1", "validation_dim.pickle")
+train_dim_file =  os.path.join(
+    os.path.dirname(
+        os.getcwd()),"metadata", "all_1M_validation_0.1", "train_dim.pickle")
+
+val_dim_file =  os.path.join(
+    os.path.dirname(
+        os.getcwd()), "metadata", "all_1M_validation_0.1", "validation_dim.pickle")
 
 with open(train_dim_file, 'rb') as f:
     num_train_samples, num_genes = pickle.load(f)
@@ -150,15 +155,29 @@ model = Tybalt(original_dim=original_dim_model,
 
 
 # Output files
-stat_file =  os.path.join(os.path.dirname(os.getcwd()), "stats", "tybalt_2layer_{}latent_stats.tsv".format(latent_dim_model))
-hist_plot_file = os.path.join(os.path.dirname(os.getcwd()), "stats", "tybalt_2layer_{}latent_hist.png".format(latent_dim_model))
+stat_file =  os.path.join(
+    os.path.dirname(
+        os.getcwd()), "stats", "tybalt_2layer_{}latent_stats.tsv".format(latent_dim_model))
+hist_plot_file = os.path.join(
+    os.path.dirname(
+        os.getcwd()), "stats", "tybalt_2layer_{}latent_hist.png".format(latent_dim_model))
 
-encoded_file = os.path.join(os.path.dirname(os.getcwd()), "encoded", "train_input_2layer_{}latent_encoded.txt".format(latent_dim_model))
+encoded_file = os.path.join(
+    os.path.dirname(
+        os.getcwd()), "encoded", "train_input_2layer_{}latent_encoded.txt".format(latent_dim_model))
 
-model_encoder_file = os.path.join(os.path.dirname(os.getcwd()), "models", "tybalt_2layer_{}latent_encoder_model.h5".format(latent_dim_model))
-weights_encoder_file = os.path.join(os.path.dirname(os.getcwd()), "models", "tybalt_2layer_{}latent_encoder_weights.h5".format(latent_dim_model))
-model_decoder_file = os.path.join(os.path.dirname(os.getcwd()), "models", "tybalt_2layer_{}latent_decoder_model.h5".format(latent_dim_model))
-weights_decoder_file = os.path.join(os.path.dirname(os.getcwd()), "models", "tybalt_2layer_{}latent_decoder_weights.h5".format(latent_dim_model))
+model_encoder_file = os.path.join(
+    os.path.dirname(
+        os.getcwd()), "models", "tybalt_2layer_{}latent_encoder_model.h5".format(latent_dim_model))
+weights_encoder_file = os.path.join(
+    os.path.dirname(
+        os.getcwd()), "models", "tybalt_2layer_{}latent_encoder_weights.h5".format(latent_dim_model))
+model_decoder_file = os.path.join(
+    os.path.dirname(
+        os.getcwd()), "models", "tybalt_2layer_{}latent_decoder_model.h5".format(latent_dim_model))
+weights_decoder_file = os.path.join(
+    os.path.dirname(
+        os.getcwd()), "models", "tybalt_2layer_{}latent_decoder_weights.h5".format(latent_dim_model))
 
 
 # In[7]:
@@ -176,7 +195,9 @@ model.get_summary()
 
 
 # Model architecture
-model_architecture_file = os.path.join(os.path.dirname(os.getcwd()),'stats', 'vae_architecture.png')
+model_architecture_file = os.path.join(
+    os.path.dirname(
+        os.getcwd()),'stats', 'vae_architecture.png')
 model.visualize_architecture(model_architecture_file)
 
 
@@ -189,7 +210,9 @@ get_ipython().run_cell_magic('time', '', 'model.train_vae(train_df=training_gene
 # In[10]:
 
 
-model_training_file = os.path.join(os.path.dirname(os.getcwd()), 'stats', 'training.pdf')
+model_training_file = os.path.join(
+    os.path.dirname(
+        os.getcwd()), 'stats', 'training.pdf')
 model.visualize_training(model_training_file)
 
 
@@ -252,7 +275,11 @@ model_weights = model.get_decoder_weights()
 # In[15]:
 
 
-encoder_model_file = os.path.join(os.path.dirname(os.getcwd()),'models', 'encoder_twohidden100_vae.hdf5')
-decoder_model_file = os.path.join(os.path.dirname(os.getcwd()),'models', 'decoder_twohidden100_vae.hdf5')
+encoder_model_file = os.path.join(
+    os.path.dirname(
+        os.getcwd()),'models', 'encoder_twohidden100_vae.hdf5')
+decoder_model_file = os.path.join(
+    os.path.dirname(
+        os.getcwd()),'models', 'decoder_twohidden100_vae.hdf5')
 model.save_models(encoder_model_file, decoder_model_file)
 

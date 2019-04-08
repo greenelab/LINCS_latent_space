@@ -109,8 +109,12 @@ chunk_size = 1000
 subsample_dataset = "subsample_13K_validation_0.2"
 
 # Get dimensions of datasets
-train_dim_file =  os.path.join(os.path.dirname(os.getcwd()), "metadata", subsample_dataset, "train_tune_dim.pickle")
-val_dim_file =  os.path.join(os.path.dirname(os.getcwd()), "metadata", subsample_dataset, "validation_tune_dim.pickle")
+train_dim_file =  os.path.join(
+    os.path.dirname(
+        os.getcwd()), "metadata", subsample_dataset, "train_tune_dim.pickle")
+val_dim_file =  os.path.join(
+    os.path.dirname(
+        os.getcwd()), "metadata", subsample_dataset, "validation_tune_dim.pickle")
 
 with open(train_dim_file, 'rb') as f:
     num_train_samples, num_genes = pickle.load(f)
@@ -137,22 +141,38 @@ validation_generator = DataGenerator(validation_file, chunk_size, num_val_sample
 
 
 # Output files
-stat_file =  os.path.join(os.path.dirname(os.getcwd()), "stats", "tybalt_2layer_{}latent_stats.tsv".format(latent_dim))
-hist_plot_file = os.path.join(os.path.dirname(os.getcwd()), "stats", "tybalt_2layer_{}latent_hist.png".format(latent_dim))
+stat_file =  os.path.join(
+    os.path.dirname(
+        os.getcwd()), "stats", "tybalt_2layer_{}latent_stats.tsv".format(latent_dim))
+hist_plot_file = os.path.join(
+    os.path.dirname(
+        os.getcwd()), "stats", "tybalt_2layer_{}latent_hist.png".format(latent_dim))
 
-encoded_file = os.path.join(os.path.dirname(os.getcwd()), "encoded", "train_input_2layer_{}latent_encoded.txt".format(latent_dim))
+encoded_file = os.path.join(
+    os.path.dirname(
+        os.getcwd()), "encoded", "train_input_2layer_{}latent_encoded.txt".format(latent_dim))
 
-model_encoder_file = os.path.join(os.path.dirname(os.getcwd()), "models", "tybalt_2layer_{}latent_encoder_model.h5".format(latent_dim))
-weights_encoder_file = os.path.join(os.path.dirname(os.getcwd()), "models", "tybalt_2layer_{}latent_encoder_weights.h5".format(latent_dim))
-model_decoder_file = os.path.join(os.path.dirname(os.getcwd()), "models", "tybalt_2layer_{}latent_decoder_model.h5".format(latent_dim))
-weights_decoder_file = os.path.join(os.path.dirname(os.getcwd()), "models", "tybalt_2layer_{}latent_decoder_weights.h5".format(latent_dim))
+model_encoder_file = os.path.join(
+    os.path.dirname(
+        os.getcwd()), "models", "tybalt_2layer_{}latent_encoder_model.h5".format(latent_dim))
+weights_encoder_file = os.path.join(
+    os.path.dirname(
+        os.getcwd()), "models", "tybalt_2layer_{}latent_encoder_weights.h5".format(latent_dim))
+model_decoder_file = os.path.join(
+    os.path.dirname(
+        os.getcwd()), "models", "tybalt_2layer_{}latent_decoder_model.h5".format(latent_dim))
+weights_decoder_file = os.path.join(
+    os.path.dirname(
+        os.getcwd()), "models", "tybalt_2layer_{}latent_decoder_weights.h5".format(latent_dim))
 
 
 # In[6]:
 
 
 # Architecture of VAE
-dim_file =  os.path.join(os.path.dirname(os.getcwd()), "metadata", subsample_dataset, "validation_tune_dim.pickle")
+dim_file =  os.path.join(
+    os.path.dirname(
+        os.getcwd()), "metadata", subsample_dataset, "validation_tune_dim.pickle")
 
 with open(dim_file, 'rb') as f:
     num_samples, num_genes = pickle.load(f)

@@ -30,8 +30,12 @@ seed(randomState)
 
 
 # Load arguments
-metadata_file = os.path.join(os.path.dirname(os.getcwd()), "metadata","GSE92742_Broad_LINCS_inst_info.txt")
-cell_file = os.path.join(os.path.dirname(os.getcwd()), "metadata","GSE92742_Broad_LINCS_cell_info.txt")
+metadata_file = os.path.join(
+    os.path.dirname(
+        os.getcwd()), "metadata","GSE92742_Broad_LINCS_inst_info.txt")
+cell_file = os.path.join(
+    os.path.dirname(
+        os.getcwd()), "metadata","GSE92742_Broad_LINCS_cell_info.txt")
 
 
 # In[3]:
@@ -242,8 +246,12 @@ multiple_dose_conc.loc[(multiple_dose_conc['drug'] == drug_name) &
 
 
 # Output
-dose_file = os.path.join(os.path.dirname(os.getcwd()), "metadata","multiple_dose_conc_counts.txt")
-conditions_file = os.path.join(os.path.dirname(os.getcwd()), "metadata","conditions_counts.txt")
+dose_file = os.path.join(
+    os.path.dirname(
+        os.getcwd()), "metadata","multiple_dose_conc_counts.txt")
+conditions_file = os.path.join(
+    os.path.dirname(
+        os.getcwd()), "metadata","conditions_counts.txt")
 
 multiple_dose_conc.to_csv(dose_file, sep='\t')
 conditions_count.to_csv(conditions_file, sep='\t')
