@@ -1,20 +1,21 @@
 
 # coding: utf-8
 
-# In[1]:
+# # Train 2-layer Tybalt
+# 
+# **By Alexandra Lee**
+# 
+# **created December 2018**
+# 
+# Encode Pseudomonas gene expression data into low dimensional latent space using Tybalt with 2-hidden layers
+#  
+# Note: Need to use python 3 to support '*' syntax change
+
+# In[ ]:
 
 
 get_ipython().run_line_magic('load_ext', 'autoreload')
 get_ipython().run_line_magic('autoreload', '2')
-# -----------------------------------------------------------------------------------------------------------------------
-# By Alexandra Lee
-# (created December 2018) 
-#
-# Encode Pseudomonas gene expression data into low dimensional latent space using 
-# Tybalt with 2-hidden layers
-# 
-# Note: Need to use python 3 to support '*' syntax change
-# --------------------------------------------------------------------------------------------------------------------
 import os
 import argparse
 import pandas as pd
@@ -78,65 +79,100 @@ from keras import metrics, optimizers
 from keras.callbacks import Callback
 
 
+# ## Initialize hyper parameters
+# 
+# 1.  learning rate: 
+# 2.  batch size: Total number of training examples present in a single batch.  Iterations is the number of batches needed to complete one epoch
+# 3.  epochs: One Epoch is when an ENTIRE dataset is passed forward and backward through the neural network only ONCE
+# 4.  kappa: warmup
+# 5.  original dim: dimensions of the raw data
+# 6.  latent dim: dimensiosn of the latent space (fixed by the user)
+#     Note: intrinsic latent space dimension unknown
+# 7.  epsilon std: 
+# 8.  beta: Threshold value for ReLU?
+
 # In[3]:
 
 
-# --------------------------------------------------------------------------------------------------------------------
-# Initialize hyper parameters
-#
-# learning rate: 
-# batch size: Total number of training examples present in a single batch
-#             Iterations is the number of batches needed to complete one epoch
-# epochs: One Epoch is when an ENTIRE dataset is passed forward and backward through the neural network only ONCE
-# kappa: warmup
-# original dim: dimensions of the raw data
-# latent dim: dimensiosn of the latent space (fixed by the user)
-#   Note: intrinsic latent space dimension unknown
-# epsilon std: 
-# beta: Threshold value for ReLU?
-# --------------------------------------------------------------------------------------------------------------------
-
-learning_rate = 0.1#0.001
+# Initialize parameters
+learning_rate = 0.00001
 epochs = 100
 kappa = 0.01
 
-intermediate_dim = 100
-latent_dim = 10
+intermediate_dim = 200
+latent_dim = 100
 epsilon_std = 1.0
 beta = K.variable(0)
 
-chunk_size = 100
-num_samples_train = 1319122
-num_samples_val = 1319
+chunk_size = 1000
 
+subsample_dataset = "subsample_13K_validation_0.2"
 
-train_file =  "/home/alexandra/Documents/Data/LINCS/train_model_input.txt.xz"
-validation_file = "/home/alexandra/Documents/Data/LINCS/validation_model_input.txt.xz"
+# Get dimensions of datasets
+train_dim_file =  os.path.join(
+    os.path.dirname(
+        os.getcwd()), "metadata", subsample_dataset, "train_tune_dim.pickle")
+val_dim_file =  os.path.join(
+    os.path.dirname(
+        os.getcwd()), "metadata", subsample_dataset, "validation_tune_dim.pickle")
 
-stat_file =  os.path.join(os.path.dirname(os.getcwd()), "stats", "tybalt_2layer_{}latent_stats.tsv".format(latent_dim))
-hist_plot_file = os.path.join(os.path.dirname(os.getcwd()), "stats", "tybalt_2layer_{}latent_hist.png".format(latent_dim))
+with open(train_dim_file, 'rb') as f:
+    num_train_samples, num_genes = pickle.load(f)
+with open(val_dim_file, 'rb') as f:
+    num_val_samples, num_genes = pickle.load(f)
 
-encoded_file = os.path.join(os.path.dirname(os.getcwd()), "encoded", "train_input_2layer_{}latent_encoded.txt".format(latent_dim))
-
-model_encoder_file = os.path.join(os.path.dirname(os.getcwd()), "models", "tybalt_2layer_{}latent_encoder_model.h5".format(latent_dim))
-weights_encoder_file = os.path.join(os.path.dirname(os.getcwd()), "models", "tybalt_2layer_{}latent_encoder_weights.h5".format(latent_dim))
-model_decoder_file = os.path.join(os.path.dirname(os.getcwd()), "models", "tybalt_2layer_{}latent_decoder_model.h5".format(latent_dim))
-weights_decoder_file = os.path.join(os.path.dirname(os.getcwd()), "models", "tybalt_2layer_{}latent_decoder_weights.h5".format(latent_dim))
+original_dim_model = num_genes
+print(num_train_samples)#num_samples_train = 1319122
+print(num_val_samples)#num_samples_val = 1319
 
 
 # In[4]:
 
 
-# Generators
-training_generator = DataGenerator(train_file, chunk_size, num_samples_train)
-validation_generator = DataGenerator(validation_file, chunk_size, num_samples_val)
+# Load gene expression data using generator 
+train_file =  "/home/alexandra/Documents/Data/LINCS_tuning/"+subsample_dataset+"/train_model_input.txt.xz"
+validation_file = "/home/alexandra/Documents/Data/LINCS_tuning/"+subsample_dataset+"/validation_model_input.txt.xz"
+
+training_generator = DataGenerator(train_file, chunk_size, num_train_samples)
+validation_generator = DataGenerator(validation_file, chunk_size, num_val_samples)
 
 
 # In[5]:
 
 
+# Output files
+stat_file =  os.path.join(
+    os.path.dirname(
+        os.getcwd()), "stats", "tybalt_2layer_{}latent_stats.tsv".format(latent_dim))
+hist_plot_file = os.path.join(
+    os.path.dirname(
+        os.getcwd()), "stats", "tybalt_2layer_{}latent_hist.png".format(latent_dim))
+
+encoded_file = os.path.join(
+    os.path.dirname(
+        os.getcwd()), "encoded", "train_input_2layer_{}latent_encoded.txt".format(latent_dim))
+
+model_encoder_file = os.path.join(
+    os.path.dirname(
+        os.getcwd()), "models", "tybalt_2layer_{}latent_encoder_model.h5".format(latent_dim))
+weights_encoder_file = os.path.join(
+    os.path.dirname(
+        os.getcwd()), "models", "tybalt_2layer_{}latent_encoder_weights.h5".format(latent_dim))
+model_decoder_file = os.path.join(
+    os.path.dirname(
+        os.getcwd()), "models", "tybalt_2layer_{}latent_decoder_model.h5".format(latent_dim))
+weights_decoder_file = os.path.join(
+    os.path.dirname(
+        os.getcwd()), "models", "tybalt_2layer_{}latent_decoder_weights.h5".format(latent_dim))
+
+
+# In[6]:
+
+
 # Architecture of VAE
-dim_file =  os.path.join(os.path.dirname(os.getcwd()), "metadata", "validation_dim.pickle")
+dim_file =  os.path.join(
+    os.path.dirname(
+        os.getcwd()), "metadata", subsample_dataset, "validation_tune_dim.pickle")
 
 with open(dim_file, 'rb') as f:
     num_samples, num_genes = pickle.load(f)
@@ -218,48 +254,34 @@ vae = Model(rnaseq_input, vae_layer)
 vae.compile(optimizer=adam, loss=None, loss_weights=[beta])
 
 
-# In[ ]:
+# In[7]:
 
 
 get_ipython().run_cell_magic('time', '', '# Training\n# hist: record of the training loss at each epoch\nhist = vae.fit_generator(generator=training_generator,\n                         validation_data=validation_generator,\n                         shuffle=True,\n                         epochs=epochs,\n                         callbacks=[WarmUpCallback(beta, kappa)])')
 
 
-# In[ ]:
+# In[8]:
 
 
 # Trained model
 encoder = Model(rnaseq_input, z_mean_encoded)
 
 
-# In[ ]:
+# In[9]:
 
 
 # Visualize training performance
 history_df = pd.DataFrame(hist.history)
-loss_df = pd.DataFrame(hist.history['loss'])
-ax = loss_df.plot()
-#ax = history_df.plot()
+#loss_df = pd.DataFrame(hist.history['loss'])
+#ax = loss_df.plot()
+ax = history_df.plot()
 ax.set_xlabel('Epochs')
 ax.set_ylabel('VAE Loss')
 fig = ax.get_figure()
 fig.savefig(hist_plot_file)
 
 
-# In[ ]:
-
-
-loss = hist.history['loss']
-val_loss = hist.history['val_loss']
-epochs = range(epochs)
-plt.figure()
-plt.plot(epochs, loss, 'o', label='Training loss')
-plt.plot(epochs, val_loss, 'b', label='Validation loss')
-plt.title('Training and validation loss')
-plt.legend()
-plt.show()
-
-
-# In[ ]:
+# In[11]:
 
 
 # Output
