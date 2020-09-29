@@ -1,0 +1,5 @@
+# LINCS_latent_space
+
+It has been shown that variational autoencoders (VAE) learn a low-dimensional latent space, where moving along different latent space features translates to meaningful changes in the original space. For example, a VAE trained on face images will learn a low-dimensional latent space where one latent feature represents, say, "sunglasses" and if we move along this "sunglasses latent feature" we will produce images of faces with and without sunglasses.
+
+We wanted to test if this latent space interpolation was possible using gene expression data instead of images. Initially we trained a VAE on *P. aeruginosa* compendium, containing ~1K samples, but were not able to show a working interpolation. In this repo we tried to train a VAE using a larger dataset, LINCS. We suspected that having a larger dataset would provide a more structured representation so that our interpolation would be more effective. This repo trained a VAE on LINCS using a generator. We did not continue with the transformation due to other avenues of research that came up.
